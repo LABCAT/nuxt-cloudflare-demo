@@ -1,0 +1,1 @@
+# Nuxt Cloudflare Pages Demo
