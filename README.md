@@ -1,75 +1,77 @@
-# Nuxt Minimal Starter
+# Nuxt Cloudflare Pages Demo
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This project demonstrates server-side rendering (SSR) with Nuxt.js deployed on Cloudflare Pages. It includes both server-side and client-side rendered components to showcase the SSR capabilities.
 
 ## Setup
 
-Make sure to install dependencies:
-
+1. Clone the repository:
 ```bash
-# npm
-npm install
+git clone [your-repo-url]
+cd nuxt-cloudflare-demo
+```
 
-# pnpm
+2. Install dependencies:
+```bash
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+## Project Structure
 
-Start the development server on `http://localhost:3000`:
+- `app.vue`: Main application component
+- `components/`:
+  - `ServerComponent.vue`: Server-side rendered component example
+  - `ClientComponent.vue`: Client-side rendered component example
+- `nuxt.config.ts`: Nuxt configuration with Cloudflare Pages preset
+- `wrangler.toml`: Cloudflare Pages configuration
 
+## Development
+
+Run the development server:
 ```bash
-# npm
-npm run dev
-
-# pnpm
 pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+## Deployment
 
-Build the application for production:
-
+1. Install Wrangler (if not already installed):
 ```bash
-# npm
-npm run build
+pnpm add -D wrangler
+```
 
-# pnpm
+2. Login to Cloudflare:
+```bash
+npx wrangler login
+```
+
+3. Build and deploy:
+```bash
 pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+npx wrangler pages deploy dist/
 ```
 
-Locally preview production build:
+## Configuration Files
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+### nuxt.config.ts
+```typescript
+export default defineNuxtConfig({
+  compatibilityDate: '2024-11-01',
+  devtools: { enabled: true },
+  
+  nitro: {
+    preset: 'cloudflare-pages'
+  }
+})
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+### wrangler.toml
+```toml
+name = "nuxt-cloudflare-demo"
+compatibility_date = "2024-11-01"
+pages_build_output_dir = "dist"
+```
+
+## Notes
+
+- The project uses `cloudflare-pages` preset in Nitro for proper SSR functionality
+- Client-side components should be wrapped with `<ClientOnly>` in templates
+- The build process outputs to `dist/` directory which is then deployed to Cloudflare Pages
