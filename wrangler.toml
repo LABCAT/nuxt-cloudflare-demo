@@ -1,0 +1,7 @@
+# wrangler.toml
+name = "nuxt-cloudflare-demo"
+compatibility_date = "2024-11-01"
+
+[build]
+command = "pnpm build"
+output_directory = ".output/public"
