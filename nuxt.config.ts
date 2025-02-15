@@ -6,5 +6,11 @@ export default defineNuxtConfig({
   // Configure for Cloudflare Pages
   nitro: {
     preset: 'cloudflare-pages'
+  },
+
+  vue: {
+    compilerOptions: {
+      isCustomElement: tag => tag.startsWith('my-')
+    }
   }
 })
