@@ -1,0 +1,18 @@
+// middleware/auth.global.ts
+export default defineNuxtRouteMiddleware(async (to) => {
+    // Skip middleware if on server side
+    if (process.server) return
+  
+    // Skip middleware for public pages
+    const publicPages = ['/', '/login', '/signup', '/confirm']
+    if (publicPages.includes(to.path)) return
+  
+    // Use Supabase to check authentication status
+    const supabase = useSupabaseClient()
+    const { data } = await supabase.auth.getSession()
+  
+    // If no active session, redirect to login
+    if (!data.session) {
+      return navigateTo('/login')
+    }
+  })

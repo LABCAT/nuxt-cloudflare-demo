@@ -1,20 +1,7 @@
-//// app.vue
+<!-- app.vue -->
 <template>
   <div>
-    <h1>Nuxt + Cloudflare Pages Demo</h1>
-
-    <!-- Server-side rendered component -->
-    <div>
-      <ServerComponent />
-      <my-component message="Hello from My Web Component!"></my-component>
-    </div>
-
-    <!-- Client-side rendered component -->
-    <ClientOnly>
-      <ClientComponent />
-    </ClientOnly>
-
-
+    <NuxtPage />
   </div>
 </template>
 <script setup>
