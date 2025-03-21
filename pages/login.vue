@@ -8,12 +8,14 @@
           <button 
             @click="activeTab = 'login'" 
             :class="['auth__tab', { 'auth__tab--active': activeTab === 'login' }]"
+            :disabled="isLoading"
           >
             Sign In
           </button>
           <button 
             @click="activeTab = 'signup'" 
             :class="['auth__tab', { 'auth__tab--active': activeTab === 'signup' }]"
+            :disabled="isLoading"
           >
             Sign Up
           </button>
@@ -42,13 +44,21 @@
                 placeholder="your@email.com" 
                 required
                 class="auth__input"
+                :disabled="isLoading"
               />
             </div>
           </div>
           
           <div class="auth__form-actions">
-            <button type="submit" class="auth__button auth__button--primary">
-              {{ activeTab === 'login' ? 'Send Login Link' : 'Send Signup Link' }}
+            <button type="submit" class="auth__button auth__button--primary" :disabled="isLoading">
+              <span v-if="isLoadingMagicLink" class="auth__button-loading">
+                <svg class="auth__spinner" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <circle class="auth__spinner-path" cx="12" cy="12" r="10" fill="none" stroke-width="4" />
+                </svg>
+              </span>
+              <span v-else>
+                {{ activeTab === 'login' ? 'Send Login Link' : 'Send Signup Link' }}
+              </span>
             </button>
           </div>
         </form>
@@ -57,24 +67,38 @@
         
         <!-- Social Login/Signup Options -->
         <div class="auth__social">
-          <button @click="handleGoogleAuth" class="auth__button auth__button--social auth__button--google">
-            <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" class="auth__icon">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-            </svg>
-            Continue with Google
+          <button @click="handleGoogleAuth" class="auth__button auth__button--social auth__button--google" :disabled="isLoading">
+            <span v-if="isLoadingGoogle" class="auth__button-loading">
+              <svg class="auth__spinner auth__spinner--dark" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <circle class="auth__spinner-path" cx="12" cy="12" r="10" fill="none" stroke-width="4" />
+              </svg>
+            </span>
+            <template v-else>
+              <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" class="auth__icon">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              Continue with Google
+            </template>
           </button>
           
-          <button @click="handleMicrosoftAuth" class="auth__button auth__button--social auth__button--microsoft">
-            <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 23 23" width="20" class="auth__icon">
-              <path fill="#f25022" d="M1 1h10v10H1z"/>
-              <path fill="#00a4ef" d="M1 12h10v10H1z"/>
-              <path fill="#7fba00" d="M12 1h10v10H12z"/>
-              <path fill="#ffb900" d="M12 12h10v10H12z"/>
-            </svg>
-            Continue with Microsoft
+          <button @click="handleMicrosoftAuth" class="auth__button auth__button--social auth__button--microsoft" :disabled="isLoading">
+            <span v-if="isLoadingMicrosoft" class="auth__button-loading">
+              <svg class="auth__spinner auth__spinner--dark" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <circle class="auth__spinner-path" cx="12" cy="12" r="10" fill="none" stroke-width="4" />
+              </svg>
+            </span>
+            <template v-else>
+              <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 23 23" width="20" class="auth__icon">
+                <path fill="#f25022" d="M1 1h10v10H1z"/>
+                <path fill="#00a4ef" d="M1 12h10v10H1z"/>
+                <path fill="#7fba00" d="M12 1h10v10H12z"/>
+                <path fill="#ffb900" d="M12 12h10v10H12z"/>
+              </svg>
+              Continue with Microsoft
+            </template>
           </button>
         </div>
       </div>
@@ -83,13 +107,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useSupabaseClient, useRouter } from '#imports'
 
 // Form state
 const email = ref('')
 const activeTab = ref('login')
 const error = ref(null)
+
+// Loading states
+const isLoadingMagicLink = ref(false)
+const isLoadingGoogle = ref(false)
+const isLoadingMicrosoft = ref(false)
+
+// Computed property to check if any loading state is active
+const isLoading = computed(() => {
+  return isLoadingMagicLink.value || isLoadingGoogle.value || isLoadingMicrosoft.value
+})
 
 // Get Supabase client and router
 const supabase = useSupabaseClient()
@@ -99,6 +133,7 @@ const router = useRouter()
 const handleMagicLink = async () => {
   try {
     error.value = null
+    isLoadingMagicLink.value = true
     
     if (activeTab.value === 'login') {
       // Send magic link login
@@ -128,12 +163,15 @@ const handleMagicLink = async () => {
   } catch (err) {
     error.value = err.message
     alert(error.value)
+  } finally {
+    isLoadingMagicLink.value = false
   }
 }
 
 // Google auth
 const handleGoogleAuth = async () => {
   try {
+    isLoadingGoogle.value = true
     const { error: err } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -145,24 +183,30 @@ const handleGoogleAuth = async () => {
   } catch (err) {
     error.value = err.message
     alert(error.value)
+    isLoadingGoogle.value = false
   }
+  // Note: We don't set isLoadingGoogle to false here because we're being redirected
 }
 
 // Microsoft auth
 const handleMicrosoftAuth = async () => {
   try {
-    const { error: err } = await supabase.auth.signInWithOAuth({
+    isLoadingMicrosoft.value = true
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'azure',
       options: {
         redirectTo: `${window.location.origin}/confirm`,
-      },
+        scopes: 'openid profile email' // Make sure to include these scopes
+      }
     })
     
     if (err) throw err
   } catch (err) {
     error.value = err.message
     alert(error.value)
+    isLoadingMicrosoft.value = false
   }
+  // Note: We don't set isLoadingMicrosoft to false here because we're being redirected
 }
 </script>
 
@@ -262,8 +306,13 @@ body {
       }
     }
     
-    &:hover:not(.auth__tab--active) {
+    &:hover:not(.auth__tab--active):not(:disabled) {
       color: var(--color-text);
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
   }
   
@@ -309,7 +358,7 @@ body {
     background-color: var(--color-input-bg);
     transition: all 0.2s;
     
-    &:focus-within {
+    &:focus-within:not(:has(input:disabled)) {
       border-color: var(--color-input-focus);
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
     }
@@ -337,6 +386,11 @@ body {
     &::placeholder {
       color: var(--color-tab-inactive);
     }
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
   }
   
   &__form-actions {
@@ -360,14 +414,19 @@ body {
       color: white;
       border: none;
       
-      &:hover {
+      &:hover:not(:disabled) {
         background-color: var(--color-primary-hover);
         transform: translateY(-2px);
         box-shadow: var(--shadow-md);
       }
       
-      &:active {
+      &:active:not(:disabled) {
         transform: translateY(0);
+      }
+      
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
       }
     }
     
@@ -378,19 +437,24 @@ body {
       margin-bottom: 0.75rem;
       gap: 0.75rem;
       
-      &:hover {
+      &:hover:not(:disabled) {
         background-color: rgba(0, 0, 0, 0.03);
         transform: translateY(-2px);
         box-shadow: var(--shadow-sm);
       }
       
-      &:active {
+      &:active:not(:disabled) {
         transform: translateY(0);
+      }
+      
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
       }
     }
     
     &--google {
-      &:hover {
+      &:hover:not(:disabled) {
         border-color: var(--color-google);
       }
     }
@@ -398,8 +462,32 @@ body {
     &--microsoft {
       margin-bottom: 0;
       
-      &:hover {
+      &:hover:not(:disabled) {
         border-color: var(--color-microsoft);
+      }
+    }
+  }
+  
+  &__button-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  &__spinner {
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    
+    &-path {
+      stroke: currentColor;
+      stroke-linecap: round;
+      animation: dash 1.5s ease-in-out infinite;
+    }
+    
+    &--dark {
+      .auth__spinner-path {
+        stroke: var(--color-text);
       }
     }
   }
@@ -431,6 +519,27 @@ body {
   &__social {
     display: flex;
     flex-direction: column;
+  }
+}
+
+// Spinner animations
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
   }
 }
 
