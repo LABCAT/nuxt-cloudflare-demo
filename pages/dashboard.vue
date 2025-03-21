@@ -56,6 +56,20 @@
           </div>
         </ClientOnly>
         
+        <!-- Web Component Example -->
+        <div class="dashboard__card">
+          <h3 class="dashboard__card-title">Web Component Example</h3>
+          <div class="dashboard__card-content">
+            <p class="dashboard__web-component-info">
+              Web Components are custom, reusable HTML elements created using standard web platform APIs. 
+              They work across modern browsers and can be used with any JavaScript library or framework.
+            </p>
+            <div class="dashboard__web-component-demo">
+              <my-component message="Hello from My Web Component!"></my-component>
+            </div>
+          </div>
+        </div>
+        
         <div class="dashboard__grid">
           <div class="dashboard__card">
             <h3 class="dashboard__card-title">Your Profile</h3>
@@ -134,9 +148,72 @@ onMounted(async () => {
   setTimeout(() => {
     isComponentsLoaded.value = true
   }, 500)
+  
+  // Define and register a basic Web Component
+  if (typeof window !== 'undefined' && !customElements.get('my-component')) {
+    class MyComponent extends HTMLElement {
+      constructor() {
+        super()
+        this.attachShadow({ mode: 'open' })
+      }
+      
+      connectedCallback() {
+        const message = this.getAttribute('message') || 'Hello World'
+        
+        this.shadowRoot.innerHTML = `
+          <style>
+            :host {
+              display: block;
+              padding: 16px;
+              background-color: #f0f9ff;
+              border-radius: 8px;
+              margin: 10px 0;
+              border-left: 4px solid #3b82f6;
+            }
+            .message {
+              font-weight: 500;
+              color: #1e40af;
+              margin: 0;
+            }
+            .info {
+              margin-top: 8px;
+              font-size: 0.9em;
+              color: #334155;
+            }
+            button {
+              margin-top: 8px;
+              padding: 6px 12px;
+              background-color: #3b82f6;
+              color: white;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+            }
+            button:hover {
+              background-color: #2563eb;
+            }
+          </style>
+          <div>
+            <p class="message">${message}</p>
+            <p class="info">This component is encapsulated using Shadow DOM</p>
+            <button id="counter-btn">Clicked 0 times</button>
+          </div>
+        `
+        
+        // Add event listener to the button
+        let count = 0
+        const button = this.shadowRoot.getElementById('counter-btn')
+        button.addEventListener('click', () => {
+          count++
+          button.textContent = `Clicked ${count} times`
+        })
+      }
+    }
+    
+    // Register the web component
+    customElements.define('my-component', MyComponent)
+  }
 })
-
-// Define auth protection in a central middleware file instead
 </script>
 
 <style lang="scss">
@@ -315,6 +392,15 @@ onMounted(async () => {
     &:hover {
       background-color: var(--color-border);
     }
+  }
+  
+  &__web-component-info {
+    margin-bottom: var(--spacing-medium);
+    line-height: 1.5;
+  }
+  
+  &__web-component-demo {
+    margin-top: var(--spacing-medium);
   }
 }
 
