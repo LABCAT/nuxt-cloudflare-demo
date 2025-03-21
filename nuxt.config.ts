@@ -21,7 +21,7 @@ export default defineNuxtConfig({
   // Let Nuxt magic handle the configuration
   supabase: {
     redirectOptions: {
-      login: '/dashboard',
+      login: '/login',
       callback: '/confirm',
       exclude: ['/']
     }
