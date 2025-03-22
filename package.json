@@ -8,7 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "deploy": "wrangler pages deployment create"
+    "deploy": "nuxt build && wrangler pages deployment create"
   },
   "dependencies": {
     "@nuxtjs/supabase": "^1.5.0",
