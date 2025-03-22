@@ -20,9 +20,6 @@ importers:
       vue:
         specifier: latest
         version: 3.5.13(typescript@5.7.3)
-      vue-form:
-        specifier: ^4.10.3
-        version: 4.10.3
       vue-router:
         specifier: latest
         version: 4.5.0(vue@3.5.13(typescript@5.7.3))
@@ -1878,9 +1875,6 @@ packages:
     resolution: {integrity: sha512-eNTPlAD67BmP31LDINZ3U7HSF8l57TxOY2PmBJ1shpCvpnxBF93mWCE8YHBnXs8qiUZJc9WDcWIeC3a2HIAMfw==}
     engines: {node: '>=6'}
 
-  extend@3.0.2:
-    resolution: {integrity: sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==}
-
   externality@1.0.2:
     resolution: {integrity: sha512-LyExtJWKxtgVzmgtEHyQtLFpw1KFhQphF9nTG8TpAIVkiI/xQ3FJh75tRFLYl4hkn7BNIIdLJInuDAavX35pMw==}
 
@@ -2933,9 +2927,6 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
 
-  scope-eval@1.0.0:
-    resolution: {integrity: sha512-oWKaZEXqucTGRzhJCXE+D+hHDkiDe1iHhBlWwxkFTzO3phrdPo4Kju2tSJiWC3x+egyqxdpbs7s+YOPlZlqB1A==}
-
   scule@1.3.0:
     resolution: {integrity: sha512-6FtHJEvt+pVMIB9IBY+IcCJ6Z5f1iQnytgyfKMhDKgmzYG+TeH/wx1y3l27rshSbLiSanrR9ffZDrEsmjlQF2g==}
 
@@ -3464,9 +3455,6 @@ packages:
 
   vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
-
-  vue-form@4.10.3:
-    resolution: {integrity: sha512-qkdgmbBIz9ZgQUvU3Wx/kttqGoVtUjXCDl7X0KzWqU9gKHG9aRqVZZyC0Bb9BtP3CjAnjDYTxUVt9vRxO3RFxA==}
 
   vue-router@4.5.0:
     resolution: {integrity: sha512-HDuk+PuH5monfNuY+ct49mNmkCRK4xJAV9Ts4z9UFc4rzdDnxQLyCMGGc8pKhZhHTVzfanpNwB/lwqevcBwI4w==}
@@ -5532,8 +5520,6 @@ snapshots:
 
   exit-hook@2.2.1: {}
 
-  extend@3.0.2: {}
-
   externality@1.0.2:
     dependencies:
       enhanced-resolve: 5.18.1
@@ -6775,8 +6761,6 @@ snapshots:
     optionalDependencies:
       '@parcel/watcher': 2.5.1
 
-  scope-eval@1.0.0: {}
-
   scule@1.3.0: {}
 
   semver@6.3.1: {}
@@ -7353,11 +7337,6 @@ snapshots:
       ufo: 1.5.4
 
   vue-devtools-stub@0.1.0: {}
-
-  vue-form@4.10.3:
-    dependencies:
-      extend: 3.0.2
-      scope-eval: 1.0.0
 
   vue-router@4.5.0(vue@3.5.13(typescript@5.7.3)):
     dependencies:
