@@ -17,10 +17,7 @@
           <template v-else>
             <!-- Show login and signup links if user is not logged in -->
             <NuxtLink to="/login" class="home__button home__button--primary">
-              Sign In
-            </NuxtLink>
-            <NuxtLink to="/signup" class="home__button home__button--secondary">
-              Sign Up
+              Sign In/Sign Up
             </NuxtLink>
           </template>
         </div>
@@ -36,7 +33,7 @@
           
           <div class="home__cta">
             <NuxtLink 
-              :to="user ? '/dashboard' : '/signup'" 
+              :to="user ? '/dashboard' : '/login'" 
               class="home__button home__button--large"
             >
               {{ user ? 'Go to Dashboard' : 'Get Started' }}
